@@ -39,7 +39,31 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
+    secrets {
+        propertiesFileName = "local.properties"
+        defaultPropertiesFileName = "local.defaults.properties"
+        ignoreList.add("sdk.dir")
+    }
+
+    flavorDimensions.add("environment")
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            val devUrl = project.findProperty("BASE_URL_DEV") ?: ""
+            buildConfigField("String", "BASE_URL", "\"$devUrl\"")
+            resValue("string", "app_name", "VitaLix (DEV)")
+        }
+
+        create("prod") {
+            dimension = "environment"
+            val prodUrl = project.findProperty("BASE_URL_PROD") ?: ""
+            buildConfigField("String", "BASE_URL", "\"$prodUrl\"")
+            resValue("string", "app_name", "VitaLix Pro")
+        }
+    }
+
 }
 
 dependencies {
