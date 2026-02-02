@@ -1,47 +1,27 @@
-package com.jujus.vitalix
+    package com.jujus.vitalix
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.jujus.vitalix.core.ui.theme.VitaLixTheme
+    import android.os.Bundle
+    import androidx.activity.ComponentActivity
+    import androidx.activity.compose.setContent
+    import androidx.activity.enableEdgeToEdge
+    import com.jujus.vitalix.core.di.AppContainer
+    import com.jujus.vitalix.core.ui.theme.VitaLixTheme
+    import com.jujus.vitalix.features.medications.di.MedicationsModule
+    import com.jujus.vitalix.features.medications.presentation.screens.MedicationScreen
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            VitaLixTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+    class MainActivity : ComponentActivity() {
+        lateinit var appContainer: AppContainer
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            println("VITALIX DEBUG: La URL es ${BuildConfig.BASE_URL}")
+            appContainer = AppContainer(this)
+            val medicationsModule = MedicationsModule(appContainer)
+            enableEdgeToEdge()
+            setContent {
+                VitaLixTheme {
+                    MedicationScreen(medicationsModule.provideGetMedicationsViewModelFactory())
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    VitaLixTheme {
-        Greeting("Android")
-    }
-}

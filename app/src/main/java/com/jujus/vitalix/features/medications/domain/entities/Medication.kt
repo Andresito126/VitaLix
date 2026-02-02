@@ -10,7 +10,7 @@ data class Medication (
     val indications : String,
     val contraindications: String,
     val isActive : Boolean,
-    val updateAt: String
+    val updateAt: String?
 
 )
 
