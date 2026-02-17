@@ -27,7 +27,6 @@ fun TitleArrow(
 
     Row(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(horizontal = 20.dp),
     ) {
         if (canNavigateBack) {
