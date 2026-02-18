@@ -7,6 +7,8 @@
     import com.jujus.vitalix.core.di.AppContainer
     import com.jujus.vitalix.core.navigation.NavigationWrapper
     import com.jujus.vitalix.core.ui.theme.VitaLixTheme
+    import com.jujus.vitalix.features.home.di.HomeModule
+    import com.jujus.vitalix.features.home.navigation.HomeNavGraph
     import com.jujus.vitalix.features.medications.di.MedicationsModule
     import com.jujus.vitalix.features.medications.navigation.MedicationsNavGraph
     import com.jujus.vitalix.features.medications.presentation.screens.MedicationScreen
@@ -16,14 +18,14 @@
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            println("VITALIX DEBUG: La URL es ${BuildConfig.BASE_URL}")
             appContainer = AppContainer(this)
 
             val medicationsModule = MedicationsModule(appContainer)
-
+            val homeModule = HomeModule(appContainer)
             enableEdgeToEdge()
             val navGraphs = listOf(
-                MedicationsNavGraph(medicationsModule)
+                MedicationsNavGraph(medicationsModule),
+                HomeNavGraph(homeModule)
             )
             setContent {
                 VitaLixTheme {
