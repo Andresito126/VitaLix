@@ -17,20 +17,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.jujus.vitalix.core.shared.components.BottomBar
 import com.jujus.vitalix.core.shared.components.NurseHeader
 import com.jujus.vitalix.core.shared.components.TitleArrow
 import com.jujus.vitalix.core.ui.theme.VitaLixTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavHostController
+) {
 
     Scaffold(
         topBar = {
             NurseHeader()
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(
+                navController = navController,
+                selectedRoute = "Home"
+            )
         }
     ) { paddingValues ->
 

@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.jujus.vitalix.BuildConfig
 import com.jujus.vitalix.core.shared.components.BottomBar
 import com.jujus.vitalix.core.shared.components.NurseHeader
@@ -28,8 +29,7 @@ import com.jujus.vitalix.features.medications.presentation.viewmodels.Medication
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicationScreen(factory: MedicationViewModelFactory) {
-    val viewModel: MedicationViewModel = viewModel(factory = factory)
+fun MedicationScreen(viewModel : MedicationViewModel, navController: NavHostController) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -37,7 +37,10 @@ fun MedicationScreen(factory: MedicationViewModelFactory) {
             NurseHeader()
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(
+                navController = navController,
+                selectedRoute = "Medications"
+            )
         }
     ) { paddingValues ->
         Column(
