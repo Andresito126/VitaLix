@@ -4,6 +4,8 @@ import com.jujus.vitalix.features.medications.domain.entities.Medication
 data class MedicationUiState(
     val isLoading: Boolean = false,
     val medications: List<Medication> = emptyList(),
+    val filteredMedications: List<Medication> = emptyList(),
+    val searchQuery: String = "",
     val error: String? = null,
     val isRefreshing: Boolean = false
 )

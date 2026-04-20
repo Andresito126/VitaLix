@@ -1,7 +1,7 @@
 package com.jujus.vitalix.features.medications.domain.entities
 
 data class Medication (
-    val id : String,
+    val id : String = "",
     val name : String,
     val concentrationMg : Double,
     val volumeMl : Double,
@@ -9,9 +9,8 @@ data class Medication (
     val description:  String,
     val indications : String,
     val contraindications: String,
-    val isActive : Boolean,
-    val updateAt: String?
-
+    val isActive : Boolean = true,
+    val updateAt: String? = null
 )
 
 

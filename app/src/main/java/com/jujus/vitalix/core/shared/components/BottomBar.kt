@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.jujus.vitalix.core.navigation.Home
+import com.jujus.vitalix.core.navigation.Info
 import com.jujus.vitalix.core.navigation.Medications
 
 @Composable
@@ -66,8 +67,8 @@ fun BottomBar(
             BottomNavItem(
                 label = "Info",
                 Icons.Default.Info,
-                isSelected = selectedRoute == "home",
-                onClick = { navController.navigate(Home) })
+                isSelected = selectedRoute == "info",
+                onClick = { navController.navigate(Info) })
         }
     }
 }

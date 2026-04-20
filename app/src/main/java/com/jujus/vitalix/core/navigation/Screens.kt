@@ -8,3 +8,8 @@ object Home
 @Serializable
 object Medications
 
+@Serializable
+object AddMedication
+
+@Serializable
+object Info

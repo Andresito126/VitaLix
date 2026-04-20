@@ -9,6 +9,8 @@
     import com.jujus.vitalix.core.ui.theme.VitaLixTheme
     import com.jujus.vitalix.features.home.di.HomeModule
     import com.jujus.vitalix.features.home.navigation.HomeNavGraph
+    import com.jujus.vitalix.features.legalnotice.di.LegalNoticeModule
+    import com.jujus.vitalix.features.legalnotice.navigation.InfoNavGraph
     import com.jujus.vitalix.features.medications.di.MedicationsModule
     import com.jujus.vitalix.features.medications.navigation.MedicationsNavGraph
     import com.jujus.vitalix.features.medications.presentation.screens.MedicationScreen
@@ -22,10 +24,12 @@
 
             val medicationsModule = MedicationsModule(appContainer)
             val homeModule = HomeModule(appContainer)
+            val infoModule = LegalNoticeModule(appContainer)
             enableEdgeToEdge()
             val navGraphs = listOf(
                 MedicationsNavGraph(medicationsModule),
-                HomeNavGraph(homeModule)
+                HomeNavGraph(homeModule),
+                InfoNavGraph(infoModule)
             )
             setContent {
                 VitaLixTheme {

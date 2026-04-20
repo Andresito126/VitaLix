@@ -6,4 +6,6 @@ interface MedicationsRepository {
 
     suspend fun getMedications() : List<Medication>
 
+    suspend fun createMedication(medication: Medication) : Medication
+
 }
