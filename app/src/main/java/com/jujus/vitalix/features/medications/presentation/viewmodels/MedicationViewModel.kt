@@ -63,16 +63,45 @@ class MedicationViewModel(
         }
     }
 
-    fun createMedication(medication: Medication, onSuccess: () -> Unit) {
+
+    fun onNameChange(newValue: String) = _uiState.update { it.copy(name = newValue) }
+    fun onConcentrationChange(newValue: String) = _uiState.update { it.copy(concentrationMg = newValue) }
+    fun onVolumeChange(newValue: String) = _uiState.update { it.copy(volumeMl = newValue) }
+    fun onCategoryChange(newValue: String) = _uiState.update { it.copy(category = newValue) }
+    fun onDescriptionChange(newValue: String) = _uiState.update { it.copy(description = newValue) }
+    fun onIndicationsChange(newValue: String) = _uiState.update { it.copy(indications = newValue) }
+    fun onContraindicationsChange(newValue: String) = _uiState.update { it.copy(contraindications = newValue) }
+
+    fun createMedication(onSuccess: () -> Unit) {
+        val currentState = _uiState.value
+        val medication = Medication(
+            name = currentState.name,
+            concentrationMg = currentState.concentrationMg.toDoubleOrNull() ?: 0.0,
+            volumeMl = currentState.volumeMl.toDoubleOrNull() ?: 0.0,
+            category = currentState.category,
+            description = currentState.description,
+            indications = currentState.indications,
+            contraindications = currentState.contraindications
+        )
+
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val result = createMedicationUseCase(medication)
             result.onSuccess {
+                resetForm() // Limpiamos el formulario después de éxito
                 loadMedications()
                 onSuccess()
             }.onFailure { error ->
                 _uiState.update { it.copy(isLoading = false, error = error.message) }
             }
         }
+    }
+
+    private fun resetForm() {
+        _uiState.update { it.copy(
+            name = "", concentrationMg = "", volumeMl = "",
+            category = "", description = "", indications = "",
+            contraindications = ""
+        )}
     }
 }

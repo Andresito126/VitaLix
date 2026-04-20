@@ -7,5 +7,14 @@ data class MedicationUiState(
     val filteredMedications: List<Medication> = emptyList(),
     val searchQuery: String = "",
     val error: String? = null,
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
+    
+    // Estado para AddMedication
+    val name: String = "",
+    val concentrationMg: String = "",
+    val volumeMl: String = "",
+    val category: String = "",
+    val description: String = "",
+    val indications: String = "",
+    val contraindications: String = ""
 )

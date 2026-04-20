@@ -13,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.jujus.vitalix.features.medications.domain.entities.Medication
 import com.jujus.vitalix.features.medications.presentation.viewmodels.MedicationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,17 +23,10 @@ fun AddMedicationScreen(
     viewModel: MedicationViewModel,
     navController: NavHostController
 ) {
-    var name by remember { mutableStateOf("") }
-    var concentrationMg by remember { mutableStateOf("") }
-    var volumeMl by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var indications by remember { mutableStateOf("") }
-    var contraindications by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf(false) }
 
     val categories = listOf("Analgésico", "Antibiótico", "Antipirético", "Antiinflamatorio", "Suplemento", "Otro")
-    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -61,8 +54,8 @@ fun AddMedicationScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
+                value = uiState.name,
+                onValueChange = { viewModel.onNameChange(it) },
                 label = { Text("Nombre del medicamento") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
@@ -70,16 +63,16 @@ fun AddMedicationScreen(
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedTextField(
-                    value = concentrationMg,
-                    onValueChange = { concentrationMg = it },
+                    value = uiState.concentrationMg,
+                    onValueChange = { viewModel.onConcentrationChange(it) },
                     label = { Text("Conc. (mg)") },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     shape = MaterialTheme.shapes.medium
                 )
                 OutlinedTextField(
-                    value = volumeMl,
-                    onValueChange = { volumeMl = it },
+                    value = uiState.volumeMl,
+                    onValueChange = { viewModel.onVolumeChange(it) },
                     label = { Text("Volumen (ml)") },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -94,7 +87,7 @@ fun AddMedicationScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                    value = category,
+                    value = uiState.category,
                     onValueChange = {},
                     readOnly = true,
                     label = { Text("Categoría") },
@@ -113,7 +106,7 @@ fun AddMedicationScreen(
                         DropdownMenuItem(
                             text = { Text(selectionOption) },
                             onClick = {
-                                category = selectionOption
+                                viewModel.onCategoryChange(selectionOption)
                                 expanded = false
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -123,8 +116,8 @@ fun AddMedicationScreen(
             }
 
             OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
+                value = uiState.description,
+                onValueChange = { viewModel.onDescriptionChange(it) },
                 label = { Text("Descripción") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 2,
@@ -132,8 +125,8 @@ fun AddMedicationScreen(
             )
 
             OutlinedTextField(
-                value = indications,
-                onValueChange = { indications = it },
+                value = uiState.indications,
+                onValueChange = { viewModel.onIndicationsChange(it) },
                 label = { Text("Indicaciones") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 2,
@@ -141,8 +134,8 @@ fun AddMedicationScreen(
             )
 
             OutlinedTextField(
-                value = contraindications,
-                onValueChange = { contraindications = it },
+                value = uiState.contraindications,
+                onValueChange = { viewModel.onContraindicationsChange(it) },
                 label = { Text("Contraindicaciones") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 2,
@@ -168,26 +161,14 @@ fun AddMedicationScreen(
 
             Button(
                 onClick = {
-                    val medication = Medication(
-                        id = "",
-                        name = name,
-                        concentrationMg = concentrationMg.toDoubleOrNull() ?: 0.0,
-                        volumeMl = volumeMl.toDoubleOrNull() ?: 0.0,
-                        category = category,
-                        description = description,
-                        indications = indications,
-                        contraindications = contraindications,
-                        isActive = true,
-                        updateAt = ""
-                    )
-                    viewModel.createMedication(medication) {
+                    viewModel.createMedication {
                         navController.popBackStack()
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = name.isNotBlank() && category.isNotBlank() && !uiState.isLoading,
+                enabled = uiState.name.isNotBlank() && uiState.category.isNotBlank() && !uiState.isLoading,
                 shape = MaterialTheme.shapes.large,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
