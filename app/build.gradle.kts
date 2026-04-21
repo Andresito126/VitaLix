@@ -1,8 +1,20 @@
+import java.util.Properties
+
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.secrets.gradle)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+}
+
+// Leer local.properties manualmente
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
 }
 
 android {
@@ -51,19 +63,18 @@ android {
     productFlavors {
         create("dev") {
             dimension = "environment"
-            val devUrl = project.findProperty("BASE_URL_DEV") ?: ""
+            val devUrl = localProperties.getProperty("BASE_URL_DEV") ?: "http://no-url-found.com/"
             buildConfigField("String", "BASE_URL", "\"$devUrl\"")
             resValue("string", "app_name", "VitaLix (DEV)")
         }
 
         create("prod") {
             dimension = "environment"
-            val prodUrl = project.findProperty("BASE_URL_PROD") ?: ""
+            val prodUrl = localProperties.getProperty("BASE_URL_PROD") ?: "http://no-url-found.com/"
             buildConfigField("String", "BASE_URL", "\"$prodUrl\"")
             resValue("string", "app_name", "VitaLix Pro")
         }
     }
-
 }
 
 dependencies {
@@ -76,6 +87,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.navigation.compose)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

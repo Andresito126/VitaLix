@@ -8,18 +8,31 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+
+    background = Color(0xFF1D293D),
+
+    onSecondary = Color(0xFF2563EB),
+    onPrimary =Color.White
+
+
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
-    tertiary = Pink40
+    tertiary = Pink40,
+
+    background = Color.White,
+
+    onSecondary = Color(0xFF2563EB),
+    onPrimary =Color(0xFF1D293D)
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -36,7 +49,7 @@ private val LightColorScheme = lightColorScheme(
 fun VitaLixTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

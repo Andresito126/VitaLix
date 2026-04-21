@@ -2,6 +2,8 @@ package com.jujus.vitalix.core.di
 import android.content.Context
 import com.jujus.vitalix.BuildConfig
 import com.jujus.vitalix.core.network.VitaLixApi
+import com.jujus.vitalix.features.medications.data.repositories.MedicationsRepositoryImplementation
+import com.jujus.vitalix.features.medications.domain.repositories.MedicationsRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,7 +19,11 @@ class AppContainer (context: Context) {
     }
 
 
+    val medicationsRepository : MedicationsRepository by lazy {
+        MedicationsRepositoryImplementation(vitaLixApi)
+    }
 
 
 
 }
+
